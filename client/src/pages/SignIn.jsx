@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function SignIn() {
   return (
@@ -93,10 +94,11 @@ export default function SignIn() {
 
         <div className="flex items-center justify-between mt-4">
           <span className="w-1/5 border-b md:w-1/4"></span>
-
-          <a href="#" className="text-xs text-gray-500 uppercase hover:underline">
+          <Link to='/sign-up'>
+            <a href="#" className="text-xs text-gray-500 uppercase hover:underline">
             or sign up
-          </a>
+            </a>
+          </Link>
 
           <span className="w-1/5 border-b md:w-1/4"></span>
         </div>
