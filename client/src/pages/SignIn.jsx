@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
 
 export default function SignIn() {
   {/* Functionality to handle form data and eventual errors */}
   const [formData, setFormData] = useState ({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate(); {/* Navigate to sign in page after registration */}
+  const dispacth = useDispatch(); {/* Dispatch to use the created reducers in the userSlice */}
   const handleChange = (e) => {
     setFormData({
         ...formData,
@@ -18,7 +20,7 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      dispacth(signInStart());
       const res = await fetch('/api/auth/signin', {
           method: 'POST',
           headers: {
@@ -29,22 +31,20 @@ export default function SignIn() {
         const data = await res.json();
         console.log(data);
         if(data.success === false) {
-          setLoading(false);
-          setError(data.message);
+          dispacth(signInFailure(data.message));
           return;
         }
-        setLoading(false);
-        setError(null);
+        dispacth(signInSuccess(data));
         navigate('/');
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      dispacth(signInFailure(error.message));
     }
    
   };
 
   return (
     <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">
+      {/* Image next to sign in only for big screens */}
       <div
         className="hidden bg-cover lg:block lg:w-1/2"
         style={{
@@ -61,6 +61,7 @@ export default function SignIn() {
           Welcome back!
         </p>
 
+        {/* Button to sign in with Google and SVG for Google logo */}
         <a
           href="#"
           className="flex items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg hover:bg-gray-50"
