@@ -69,7 +69,8 @@ export default function SignUp() {
         <input
           id="username"
           className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
-          type="text" onChange={handleChange}
+          type="text" 
+          onChange={handleChange}
         />
 
         <label className="block mb-2 text-sm font-medium text-gray-600">
@@ -78,7 +79,8 @@ export default function SignUp() {
         <input
           id="email"
           className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
-          type="email" onChange={handleChange}
+          type="email" 
+          onChange={handleChange}
         />
 
         <label className="block mb-2 text-sm font-medium text-gray-600">
@@ -87,7 +89,8 @@ export default function SignUp() {
         <input
           id="password"
           className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
-          type="password" onChange={handleChange}
+          type="password" 
+          onChange={handleChange}
         />
 
         <div className="mt-6">
@@ -108,9 +111,9 @@ export default function SignUp() {
 
         <span className="w-1/5 border-b md:w-1/4"></span>
       </div>
+      {/* Text to show error to user */}
+      {error && <p className='text-red-500 - mt-5'>{error}</p>} 
     </div>
-    {/* Text to show error to user */}
-    {error && <p className='text-red-500 - mt-5'>{error}</p>} 
   </div>
   );
 }
