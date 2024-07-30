@@ -1,12 +1,13 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice';
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
   const {currentUser} = useSelector((state) => state.user)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   {/* onClick function for deleting user with dispatch and navigate */}
   const handleDeleteUser = async () => {
     try {
@@ -23,6 +24,23 @@ export default function Profile() {
       navigate('/sign-in');
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
+    }
+  }
+
+  {/* onClick function for signing out user with dispatch and navigate */}
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      dispatch(signOutUserSuccess(data));
+      navigate('sign-in');
+    } catch (error) {
+      dispatch(signOutUserFailure(data.message));
     }
   }
   return (
@@ -45,7 +63,7 @@ export default function Profile() {
       </div>
       <hr className='pb-4'></hr>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+        <button onClick={handleSignOut} className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
           sign out
         </button>
 
