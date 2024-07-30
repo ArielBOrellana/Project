@@ -62,7 +62,7 @@ export default function Profile() {
         <p className="text-gray-600 pb-5">{currentUser.email}</p>
       </div>
       <hr className='pb-4'></hr>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 pb-4">
         <button onClick={handleSignOut} className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
           sign out
         </button>
@@ -71,6 +71,9 @@ export default function Profile() {
           delete account
         </button>
       </div>
+      <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-900 rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+        create listing
+      </button>
     </div>
   </div>
   )
