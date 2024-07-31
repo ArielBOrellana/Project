@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
   const {currentUser} = useSelector((state) => state.user)
@@ -44,12 +45,12 @@ export default function Profile() {
     }
   }
   return (
-  <div className="flex flex-col md:flex-row md:max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+  <div className="flex flex-col md:flex-row md:max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-3">
     {/* Left Section*/}
-    <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 flex flex-col items-center justify-center text-center text-white md:w-1/3">
+    <div className="bg-slate-400 p-6 flex flex-col items-center justify-center text-center text-white md:w-1/3 rounded-lg">
       <img src={currentUser.avatar} alt="https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0="
       className="w-24 h-24 rounded-full border-2 border-black"/>
-      <h2 className="text-2xl font-bold mt-4">Profile</h2>
+      <h2 className="text-2xl font-bold mt-4 text-black">Profile</h2>
     </div>
     {/* Right Section*/}
     <div className="p-6 md:w-2/3">
@@ -71,9 +72,11 @@ export default function Profile() {
           delete account
         </button>
       </div>
-      <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-900 rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-        create listing
-      </button>
+      <Link to='/create-listing'>
+        <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-900 rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+          create listing
+        </button>
+      </Link>
     </div>
   </div>
   )
