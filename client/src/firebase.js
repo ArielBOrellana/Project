@@ -5,10 +5,10 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY, //Imported from .env to hide it
+  apiKey: "AIzaSyDB1vCX-vh7HqdEMhEfDT7SKryDxy43bUE",
   authDomain: "real-estate-marketplace-899e8.firebaseapp.com",
   projectId: "real-estate-marketplace-899e8",
-  storageBucket: "real-estate-marketplace-899e8.appspot.com",
+  storageBucket: "real-estate-marketplace-899e8.firebasestorage.app",
   messagingSenderId: "863459813543",
   appId: "1:863459813543:web:9334b6da99aae1fefd9382"
 };

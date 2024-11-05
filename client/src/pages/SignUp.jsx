@@ -142,10 +142,8 @@ export default function SignUp() {
       <div className="flex items-center justify-between mt-4">
         <span className="w-1/5 border-b md:w-1/4"></span>
 
-        <Link to={"/sign-in"}>
-          <a href="#" className="text-xs text-gray-500 uppercase hover:underline">
+        <Link to="/sign-in" className="text-xs text-gray-500 uppercase hover:underline">
             or sign in
-          </a>
         </Link>
 
         <span className="w-1/5 border-b md:w-1/4"></span>

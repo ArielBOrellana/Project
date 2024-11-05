@@ -9,7 +9,7 @@ export default function SignIn() {
   const [formData, setFormData] = useState ({});
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate(); {/* Navigate to sign in page after registration */}
-  const dispacth = useDispatch(); {/* Dispatch to use the created reducers in the userSlice */}
+  const dispatch = useDispatch(); {/* Dispatch to use the created reducers in the userSlice */}
   const handleChange = (e) => {
     setFormData({
         ...formData,
@@ -21,7 +21,7 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispacth(signInStart());
+      dispatch(signInStart());
       const res = await fetch('/api/auth/signin', {
           method: 'POST',
           headers: {
@@ -32,13 +32,13 @@ export default function SignIn() {
         const data = await res.json();
         console.log(data);
         if(data.success === false) {
-          dispacth(signInFailure(data.message));
+          dispatch(signInFailure(data.message));
           return;
         }
-        dispacth(signInSuccess(data));
+        dispatch(signInSuccess(data));
         navigate('/');
     } catch (error) {
-      dispacth(signInFailure(error.message));
+      dispatch(signInFailure(error.message));
     }
    
   };
@@ -99,7 +99,7 @@ export default function SignIn() {
             />
 
             <div className="mt-6">
-              <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+              <button disabled={loading} className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                 {loading ? 'Loading...' : 'Sign In'} {/* Change text when loading */}
               </button>
             </div>
@@ -107,11 +107,9 @@ export default function SignIn() {
 
         <div className="flex items-center justify-between mt-4">
           <span className="w-1/5 border-b md:w-1/4"></span>
-          <Link to='/sign-up'>
-            <a href="#" className="text-xs text-gray-500 uppercase hover:underline">
+          <Link to="/sign-up" className="text-xs text-gray-500 uppercase hover:underline">
             or sign up
-            </a>
-          </Link>
+        </Link>
 
           <span className="w-1/5 border-b md:w-1/4"></span>
         </div>
