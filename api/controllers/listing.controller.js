@@ -10,7 +10,7 @@ export const createListing = async (req, res, next) => {
         next(error);
     }
 
-}
+};
 
 {/* Function for deleting the listing with if checks */}
 export const deleteListing = async (req, res, next) => {
@@ -30,4 +30,17 @@ export const deleteListing = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
+
+{/* Function to get all the listing information */}
+export const getListing = async (req, res, next) => {
+    try {
+        const listing = await Listing.findById(req.params.id);
+        if (!listing) {
+            return next(errorHandler(404, 'Listing not found!'));
+        }
+        res.status(200).json(listing);
+    } catch (error) {
+        next(error);
+    }
+};
