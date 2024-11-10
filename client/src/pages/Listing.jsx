@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { Navigation } from 'swiper/modules'
@@ -11,6 +12,7 @@ import {
   FaMapMarkerAlt,
   FaParking
 } from 'react-icons/fa'
+import Contact from '../components/Contact';
 
 export default function Listing() {
   SwiperCore.use([Navigation]);
@@ -18,7 +20,9 @@ export default function Listing() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const params = useParams();
+  const {currentUser} = useSelector((state) => state.user);
 
+  {/* Fetching listing data */}
   useEffect(()=> {
     const fetchListing = async () => {
       try {
@@ -40,6 +44,7 @@ export default function Listing() {
     }
     fetchListing();
   }, [params.listingId]);
+
   return (
     <div className="bg-white rounded-lg m-2">
       {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
@@ -91,20 +96,27 @@ export default function Listing() {
               {listing.bedrooms > 1 ? `${listing.bedrooms} beds` : 
                `${listing.bedrooms} bed `}
             </li>
+
             <li className='flex items-center gap-1 whitespace-nowrap'>
               <FaBath className='text-lg'/>
               {listing.bathrooms > 1 ? `${listing.bathrooms} baths` : 
                `${listing.bathrooms} bath `}
             </li>
+
             <li className='flex items-center gap-1 whitespace-nowrap'>
               <FaChair className='text-lg'/>
               {listing.furnished ? 'Furnished' : 'Not Furnished'}
             </li>
+
             <li className='flex items-center gap-1 whitespace-nowrap'>
               <FaParking className='text-lg'/>
               {listing.parking ? 'Parking' : 'No Parking'}
             </li>
           </ul>
+
+          {currentUser && listing.userRef !== currentUser._id && (
+            <Contact listing={listing} />
+          )}
         </div>
       </div>}
     </div>
