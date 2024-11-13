@@ -28,7 +28,7 @@ export default function Header() {
 
   {/* Header with links to different pages and search bar */}
   return (
-    <header className='bg-white shadow-md'>
+    <header className='bg-white shadow-md border'>
       <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
         <ul className='flex gap-4'> {/* Different lists to seperate */}
           <Link to='/'>

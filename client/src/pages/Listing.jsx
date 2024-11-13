@@ -70,14 +70,14 @@ export default function Listing() {
           <div className="swiper-button-prev absolute items-center transform -translate-y-1/2 text-white bg-black bg-opacity-50 rounded-lg p-2 hover:bg-opacity-70 z-10"></div>
         </Swiper>
 
-        <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
+        <div className='flex flex-col max-w-4xl mx-auto p-3 my-2 gap-4'>
           <p className='text-2xl font-semibold'>
             {listing.name} - ${' '}
-            {listing.price}
+            {listing.price.toLocaleString('en-US')}
             {listing.type === 'rent' && ' / month'}
           </p>
           <hr/>
-          <p className='flex items-center mt-6 gap-2 text-slate-600  text-sm'>
+          <p className='flex items-center mt-3 gap-2 text-slate-600  text-sm'>
             <FaMapMarkerAlt className='text-green-700' />
             {listing.address}
           </p>
