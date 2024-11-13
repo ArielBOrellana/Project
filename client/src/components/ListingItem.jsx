@@ -36,6 +36,9 @@ export default function ListingItem({ listing }) {
                         <FaBath className='text-lg text-green-light'/>
                         {listing.bathrooms}
                     </div>
+                    <p className='bg-green-light text-white rounded-xl px-2 items-center ml-auto'>
+                        {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
+                    </p>
                 </div>
             </div>
         </Link>

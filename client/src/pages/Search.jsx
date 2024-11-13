@@ -6,6 +6,7 @@ export default function Search() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
+    const [showMore, setShowMore] = useState(false);
     const [sidebarData, setSidebarData] = useState({
         type: 'all',
         parking: false,
@@ -13,7 +14,6 @@ export default function Search() {
         sort: 'created_at',
         order: 'desc',
     });
-    console.log(listings);
 
     {/* Set sidebar data acoording to changes in the URL */}
     useEffect(() => {
@@ -41,11 +41,18 @@ export default function Search() {
             });
         }
 
+        {/* Fetching all the listings that fit the search and handling show more button */}
         const fetchListings = async () => {
             setLoading(true);
+            setShowMore(false);
             const searchQuery = urlParams.toString();
             const res = await fetch(`/api/listing/get?${searchQuery}`);
             const data = await res.json();
+            if (data.length > 8){
+                setShowMore(true);
+            } else {
+                setShowMore(false);
+            }
             setListings(data);
             setLoading(false);
         }
@@ -54,7 +61,7 @@ export default function Search() {
 
     {/* Function for handling change in the sidebar/filter */}
     const handleChange = (e) => {
-        if (e.target.id === 'all' || e.target.id === 'rent' || e.target.id === 'sale'){
+        if (e.target.id === 'all' || e.target.id === 'rent' || e.target.id === 'sell'){
             setSidebarData({...sidebarData, type: e.target.id});
         }
 
@@ -80,6 +87,22 @@ export default function Search() {
         urlParams.set('order', sidebarData.order);
         const searchQuery = urlParams.toString();
         navigate(`/search?${searchQuery}`);
+    }
+
+    {/* Function for the 'show more' button that shows more listings if more than 9 */}
+    const onShowMoreClick = async () => {
+        const numOfListings = listings.length;
+        const startIndex = numOfListings;
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('startIndex', startIndex);
+
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/api/listing/get?${searchQuery}`);
+        const data = await res.json();
+        if (data.length < 9){
+            setShowMore(false);
+        }
+        setListings([...listings, ...data]);
     }
 
   return (
@@ -113,10 +136,10 @@ export default function Search() {
                     <div className='flex gap-2 '>
                         <input 
                             type='checkbox' 
-                            id='sale' 
+                            id='sell' 
                             className='w-5'
                             onChange={handleChange}
-                            checked={sidebarData.type === 'sale'}
+                            checked={sidebarData.type === 'sell'}
                         />
                         <span>For Sale</span>
                     </div>
@@ -181,6 +204,15 @@ export default function Search() {
                 {!loading && listings && listings.map((listing) => (
                     <ListingItem key={listing._id} listing={listing} />
                 ))}
+
+                {showMore && (
+                    <button 
+                        className='text-green-dark hover:underline p-7 text-center w-full'
+                        onClick={onShowMoreClick}
+                    >
+                        Show more
+                    </button>
+                )}
             </div>
         </div>
     </div>
