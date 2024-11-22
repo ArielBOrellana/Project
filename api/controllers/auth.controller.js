@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 //Method to sign up and create new user with hashed password
 export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
-    const hashedPassword = bcryptjs.hashSync(password, 10);
+    const hashedPassword = bcryptjs.hashSync(password, 10); //Hashing password
     const newUser = new User({ username, email, password: hashedPassword });
     try {
         await newUser.save();
@@ -24,9 +24,9 @@ export const signin = async (req, res, next) => {
         if (!validUser) return next(errorHandler(404, 'User not found!'));
         const validPassword = bcryptjs.compareSync(password, validUser.password);
         if (!validPassword) return next(errorHandler(401, 'Wrong credentials!'));
-        const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET); {/* Creating a hashed token using JWT*/}
-        const { password: pass, ...rest } = validUser._doc; {/* Making sure not to send the password back to the user, danger for leaks */}
-        res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest); {/* Creating a cookie for the users session */}
+        const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET); //Creating a hashed token using JWT
+        const { password: pass, ...rest } = validUser._doc; //Making sure not to send the password back to the user, danger for leaks
+        res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest); //Creating a cookie for the users session
     } catch (error) {
         next(error);
     }
@@ -64,9 +64,10 @@ export const google = async (req, res, next) => {
     }
 }
 
+{/* Method for signing out the user */}
 export const signout = async (req, res, next) => {
     try {
-        res.clearCookie('access_token');
+        res.clearCookie('access_token'); //Clearing cookie/access_token
         res.status(200).json('User has been signed out');
     } catch (error) {
         next(error)

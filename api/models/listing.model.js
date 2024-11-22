@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+{/* Schema/model for listings */}
 const listingSchema = new mongoose.Schema(
     {
         name: {
@@ -34,7 +35,7 @@ const listingSchema = new mongoose.Schema(
             type: Boolean,
             required: true,
         },
-        type: {
+        type: { //Either for rent or sale/sell
             type: String,
             required: true,
         },
@@ -42,7 +43,7 @@ const listingSchema = new mongoose.Schema(
             type: Array,
             required: true,
         },
-        userRef: {
+        userRef: { //The owner of the listing
             type: String,
             required: true,
         },

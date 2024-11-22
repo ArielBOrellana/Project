@@ -6,34 +6,38 @@ import authRouter from './routes/auth.route.js';
 import listingRouter from './routes/listing.route.js';
 import cookieParser from 'cookie-parser';
 
-dotenv.config();
+dotenv.config(); // Load environment variables from .env file
 
+// Connect to MongoDB using the connection string in the .env file
 mongoose.connect(process.env.MONGO).then(() => {
-    console.log('Connected to MongoDB!')
+    console.log('Connected to MongoDB!');
 }).catch((err) => {
-    console.log(err);
+    console.log(err); // Log connection error if it occurs
 });
 
-const app = express();
+const app = express(); // Initialize Express app
 
-app.use(express.json());
+app.use(express.json()); // Middleware to parse incoming JSON requests
 
-app.use(cookieParser());
+app.use(cookieParser()); // Middleware to parse cookies in requests
 
+// Start the server on port 3000
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
 
-app.use('/api/user', userRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/listing', listingRouter);
+// Route handlers for different API endpoints
+app.use('/api/user', userRouter); // Routes related to user operations
+app.use('/api/auth', authRouter); // Routes related to authentication
+app.use('/api/listing', listingRouter); // Routes related to listings
 
+// Global error-handling middleware
 app.use((err, req, res, next) => {
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal Server Error';
+    const statusCode = err.statusCode || 500; // Default to 500 if no status code is provided
+    const message = err.message || 'Internal Server Error'; // Default to generic error message
     return res.status(statusCode).json({
         success: false,
-        statusCode,
-        message,
+        statusCode, // Return the status code for debugging
+        message, // Return the error message
     });
 });

@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
-  {/* Functionality to handle form data and eventual errors */}
+
+  // State for managing form data, errors and loading status
   const [formData, setFormData] = useState ({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); {/* Navigate to sign in page after registration */}
+  
+  const navigate = useNavigate(); // Navigate to sign in page after registration
+
+  // Handle changes in form field and update form data
   const handleChange = (e) => {
     setFormData({
         ...formData,
@@ -14,7 +18,7 @@ export default function SignUp() {
       });
   };
 
-  {/* Method to handle submition of form and error checking */}
+  // Hanlde form submition, make API request, and handle response/errors
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -102,6 +106,7 @@ export default function SignUp() {
           <span className="w-1/5 border-b lg:w-1/4"></span>
         </div>
 
+        {/* Username Input */}
         <label className="block mb-2 text-sm font-medium text-gray-600">
           Username
         </label>
@@ -112,6 +117,7 @@ export default function SignUp() {
           onChange={handleChange}
         />
 
+        {/* Email Input */}
         <label className="block mb-2 text-sm font-medium text-gray-600 pt-2">
           Email Address
         </label>
@@ -122,6 +128,7 @@ export default function SignUp() {
           onChange={handleChange}
         />
 
+        {/* Password Input */}
         <label className="block mb-2 text-sm font-medium text-gray-600 pt-2">
           Password
         </label>
