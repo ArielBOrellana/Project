@@ -31,40 +31,58 @@ export default function CreateListing() {
 
     // Handles image uploads and enforces the 10-image limit
     const handleImageSubmit = (e) => {
-        if (files.length > 0 && files.length + formData.imageUrls.length <= 10) {
-            setUploading(true);
-            const promises = files.map(file => storeImage(file)); // Upload each file in parallel
-
-            Promise.all(promises)
-                .then((urls) => {
-                    setFormData({ ...formData, imageUrls: [...formData.imageUrls, ...urls] }); // Append uploaded URLs
-                    setUploading(false);
-                })
-                .catch(() => {
-                    setImageUploadError('Image upload failed'); 
-                    setUploading(false);
-                });
+        if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
+          setUploading(true);
+          setImageUploadError(false);
+          const promises = [];
+    
+          for (let i = 0; i < files.length; i++) {
+            promises.push(storeImage(files[i])); 
+          }
+          Promise.all(promises)
+            .then((urls) => {
+              setFormData({
+                ...formData,
+                imageUrls: formData.imageUrls.concat(urls),
+              });
+              setImageUploadError(false);
+              setUploading(false);
+            })
+            .catch((err) => {
+              setImageUploadError('Image upload failed (2 mb max per image)');
+              setUploading(false);
+            });
         } else {
-            setImageUploadError('You can only upload up to 10 images per listing'); 
+          setImageUploadError('You can only upload 6 images per listing');
+          setUploading(false);
         }
-    };
+      };
 
     // Uploads a single image to Firebase Storage
     const storeImage = async (file) => {
-        const storage = getStorage(app); 
-        const fileName = new Date().getTime() + file.name; // Unique filename to avoid collisions
-        const storageRef = ref(storage, fileName); 
-        const uploadTask = uploadBytesResumable(storageRef, file);
-
         return new Promise((resolve, reject) => {
-            uploadTask.on(
-                'state_changed',
-                null, 
-                reject, // Rejects promise if there's an upload error
-                () => getDownloadURL(uploadTask.snapshot.ref).then(resolve) // Resolves with the file's URL
-            );
+          const storage = getStorage(app);
+          const fileName = new Date().getTime() + file.name; // Unique filename to avoid collision 
+          const storageRef = ref(storage, fileName);
+          const uploadTask = uploadBytesResumable(storageRef, file);
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log(`Upload is ${progress}% done`);
+            },
+            (error) => {
+              reject(error); 
+            },
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                resolve(downloadURL); // Resolves with the files URL
+              });
+            }
+          );
         });
-    };
+      };
 
     // Deletes an image URL from the form data
     const handleDeleteImage = (index) => {
@@ -76,39 +94,65 @@ export default function CreateListing() {
 
     // Handles various input changes in the form
     const handleChange = (e) => {
-        const { id, type, value, checked } = e.target;
 
-        if (id === 'sell' || id === 'rent') {
-            setFormData({ ...formData, type: id }); // Toggles between "sell" and "rent"
-        } else if (type === 'checkbox') {
-            setFormData({ ...formData, [id]: checked }); // Updates boolean fields
-        } else {
-            setFormData({ ...formData, [id]: value }); // Updates text and number fields
+        // Toggles between 'sale' and 'rent'
+        if (e.target.id === 'sell' || e.target.id === 'rent') {
+            setFormData({
+              ...formData,
+              type: e.target.id,
+            });
         }
+
+        // Updates changes to 'parking' and 'furnished'
+        if (e.target.id === 'parking' || e.target.id === 'furnished') {
+            setFormData({
+                ...formData,
+                [e.target.id]: e.target.checked,
+            });
+        }
+
+        // Updates changes to numbers, text and textarea
+        if (
+            e.target.type === 'number' ||
+            e.target.type === 'text' ||
+            e.target.type === 'textarea'
+          ) {
+            setFormData({
+              ...formData,
+              [e.target.id]: e.target.value,
+            });
+          }
+
     };
 
     // Submits the form data to the backend API
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.imageUrls.length < 1) return setError('You must upload at least one image');
-
+        
         try {
+            if (formData.imageUrls.length < 1) return setError('You must upload at least one image');
             setLoading(true);
+            setError(false);
+
             const res = await fetch('/api/listing/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...formData, userRef: currentUser._id }), // Include user ID
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({...formData, userRef: currentUser._id,}), // Includes user ID
             });
+
             const data = await res.json();
             setLoading(false);
-
-            if (!data.success) return setError(data.message);
-            navigate(`/listing/${data._id}`); // Redirects to the new listing
-        } catch (err) {
-            setError('Failed to create listing');
+            if (data.success === false) {
+              setError(data.message);
+            }
+            navigate(`/listing/${data._id}`); // Redirects to new listing
+          } catch (error) {
+            setError(error.message);
             setLoading(false);
-        }
-    };
+          }
+        };
 
   return (
     <div className="bg-white rounded-lg m-2">
@@ -119,12 +163,13 @@ export default function CreateListing() {
             <div className="flex flex-col gap-4 p-3">
                  {/* Handles name/title input */}
                 <label className="block mb-2 text-sm font-medium text-gray-600">
-                    Name
+                    Title
                 </label>
                 <input 
                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
                     type="text" 
                     id="name"
+                    placeholder='Title for the listing'
                     required
                     onChange={handleChange}
                     value={formData.name}
@@ -138,6 +183,7 @@ export default function CreateListing() {
                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
                     type="text" 
                     id="description"
+                    placeholder='Description'
                     required
                     onChange={handleChange}
                     value={formData.description}
@@ -151,6 +197,7 @@ export default function CreateListing() {
                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" 
                     type="text" 
                     id="address"
+                    placeholder='Address'
                     required
                     onChange={handleChange}
                     value={formData.address}

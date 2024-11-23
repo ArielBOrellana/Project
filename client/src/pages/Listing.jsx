@@ -29,17 +29,17 @@ export default function Listing() {
         setLoading(true);
         const res = await fetch(`/api/listing/get/${params.listingId}`); // API call to get a specific listing by ID
         const data = await res.json();
-        if (!data.success) { // Handle case where the API returns an error flag
+        if (data.success === false) { // Handle case where the API returns an error flag
           setError(true);
           setLoading(false);
           return;
         }
         setListing(data); // Populate listing data on success
+        setLoading(false);
         setError(false);
       } catch (error) {
         setError(true); // Handle network or other fetch-related errors
-      } finally {
-        setLoading(false); // Always stop the loading spinner
+        setLoading(false);
       }
     };
     fetchListing();
@@ -53,14 +53,14 @@ export default function Listing() {
       {listing && !loading && !error && (
         <div className="p-5">
           <Swiper
-            className="relative w-full max-w-md rounded-lg overflow-hidden"
+            className="relative w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl rounded-lg overflow-hidden"
             modules={[Navigation]}
             navigation={{ nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }} // Navigation buttons
           >
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div className="flex justify-center items-center px-2">
-                  <img className="h-auto max-w-lg rounded-lg w-full" src={url} alt="Listing" /> {/* Display listing images */}
+                  <img className="-auto w-full sm:w-[80%] md:w-[90%] lg:w-[95%] xl:w-full max-w-4xl rounded-lg" src={url} alt="Listing" /> {/* Display listing images */}
                 </div>
               </SwiperSlide>
             ))}
