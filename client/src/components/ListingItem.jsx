@@ -55,7 +55,7 @@ export default function ListingItem({ listing }) {
               {listing.bathrooms}
             </div>
             {/* Property type: Rent or Sale */}
-            <p className='bg-green-light text-white rounded-xl px-2 items-center ml-auto'>
+            <p className='bg-green-light text-white rounded-xl px-4 items-center ml-auto'>
               {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
             </p>
           </div>

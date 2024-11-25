@@ -5,6 +5,7 @@ import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import listingRouter from './routes/listing.route.js';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -14,6 +15,8 @@ mongoose.connect(process.env.MONGO).then(() => {
 }).catch((err) => {
     console.log(err); // Log connection error if it occurs
 });
+
+const __dirname = path.resolve(); // Resolve the current directory path to ensure compatibility across environments
 
 const app = express(); // Initialize Express app
 
@@ -30,6 +33,16 @@ app.listen(3000, () => {
 app.use('/api/user', userRouter); // Routes related to user operations
 app.use('/api/auth', authRouter); // Routes related to authentication
 app.use('/api/listing', listingRouter); // Routes related to listings
+
+// Serve static files from the 'dist' directory in the client folder
+// This allows the server to deliver the production build of the frontend
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+// Catch-all route to handle any requests not matched by API routes
+// This ensures that React's client-side routing works properly in production
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 // Global error-handling middleware
 app.use((err, req, res, next) => {
