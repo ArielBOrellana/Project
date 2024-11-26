@@ -56,6 +56,7 @@ export default function Listing() {
             className="relative w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl rounded-lg overflow-hidden"
             modules={[Navigation]}
             navigation={{ nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }} // Navigation buttons
+            preventInteractionOnTransition={true}
           >
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>

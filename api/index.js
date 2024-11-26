@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
     const message = err.message || 'Internal Server Error'; // Default to generic error message
     return res.status(statusCode).json({
         success: false,
-        statusCode, // Return the status code for debugging
+        statusCode, // Return the status code for debugging 
         message, // Return the error message
     });
 });
