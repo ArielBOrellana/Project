@@ -115,6 +115,7 @@ export default function Profile() {
         </button>
       </Link> 
 
+      {/* If user has listings, they are shown here */}
       <button onClick={handleShowListings} className='w-full pt-3'>Show listings</button>
       <p className='text-red-700 mt-5'>
         {showListingsError ? 'Error showing listing' : ''}
