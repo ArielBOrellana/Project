@@ -67,7 +67,7 @@ export default function OAuth() {
                 </svg>
             </div>
 
-            <span className="w-5/6 px-4 py-3 font-bold text-center">Sign in with Google</span>
+            <span className="w-5/6 px-4 py-3 font-bold text-center">Continue with Google</span>
         </button>
     )
 }
