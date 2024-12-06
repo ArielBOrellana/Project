@@ -61,5 +61,7 @@ Ensure you have the following installed:
 
 ## **Testing the application**
 
-For detailed test cases, refer to `TEST_CASES.md`.
+For detailed test cases, refer to [`TEST_CASES.md`](TEST_CASES.md).
 Application is already made with sample data.
+
+
