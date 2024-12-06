@@ -1,8 +1,53 @@
-# React + Vite
+# Real Estate Marketplace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack application for exploring, creating, and managing real estate listings. The app supports user authentication, property uploads, and a seamless search experience.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## **Features**
+- User registration and login (with Google OAuth support).
+- Add, view, and delete real estate listings.
+- Responsive design for mobile and desktop.
+- Image carousel for listing details.
+- Search functionality to filter listings by keywords.
+
+---
+
+## **Installation Instructions**
+
+### Prerequisites
+Ensure you have the following installed:
+- **Node.js** (v16 or later)
+- **npm** or **yarn**
+
+### Backend Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ArielBOrellana/Project-JavaAndWebDev.git
+
+2. Install dependencies:
+    npm install
+
+3. Create a .env file in the backend with the following variables:
+    MONGO = "mongodb+srv://arielborellana:arielborellana@rem.wf7jfao.mongodb.net/?retryWrites=true&w=majority&appName=REM"
+    JWT_SECRET = 'kfjnefecppaow4839p32'
+
+4. Start the backend server:
+    npm run dev
+
+### Frontend Setup
+1. Navigate to the frontend directory:
+    cd client
+
+2. Install dependencies:
+    npm install
+
+3. Create a .env in the frontend with the following variables:
+    VITE_FIREBASE_API_KEY = "AIzaSyDB1vCX-vh7HqdEMhEfDT7SKryDxy43bUE"
+
+4. Start development server:
+    npm run dev
+
+5. Open browser and navigate to:
+    Local address shown in the console on the form: 
+    "http://localhost:your_port_number/"
