@@ -26,28 +26,40 @@ Ensure you have the following installed:
    git clone https://github.com/ArielBOrellana/Project-JavaAndWebDev.git
 
 2. Install dependencies:
+    ```bash
     npm install
 
-3. Create a .env file in the backend with the following variables:
+3. Create a `.env` file in the backend with the following variables:
+    ```env
     MONGO = "mongodb+srv://arielborellana:arielborellana@rem.wf7jfao.mongodb.net/?retryWrites=true&w=majority&appName=REM"
     JWT_SECRET = 'kfjnefecppaow4839p32'
 
 4. Start the backend server:
+    ```bash
     npm run dev
 
 ### Frontend Setup
 1. Navigate to the frontend directory:
+    ```bash
     cd client
 
 2. Install dependencies:
+    ```bash
     npm install
 
-3. Create a .env in the frontend with the following variables:
+3. Create a `.env` in the frontend with the following variables:
+    ```env
     VITE_FIREBASE_API_KEY = "AIzaSyDB1vCX-vh7HqdEMhEfDT7SKryDxy43bUE"
 
 4. Start development server:
+    ```bash
     npm run dev
 
 5. Open browser and navigate to:
-    Local address shown in the console on the form: 
+    - Local address shown in the console on the form: 
     "http://localhost:your_port_number/"
+
+## **Testing the application**
+
+For detailed test cases, refer to `TEST_CASES.md`.
+Application is already made with sample data.
